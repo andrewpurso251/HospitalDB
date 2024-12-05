@@ -205,14 +205,44 @@ def deleteMedication():
 def displayRecord(choice):
     if choice == '1':
         itemId = input("Please input the DoctorID of the Doctor you are looking for")
+        cursor.execute("SELECT * FROM Doctors WHERE doctor_id = :doctor_id", {'doctor_id': itemId})
+        record = cursor.fetchone()
+        if record:
+            print(record)
+        else:
+            print("No record found with the provided DoctorID")
     elif choice == '2':
         itemId = input("Please input the PatientID of the Patient you are looking for")
+        cursor.execute("SELECT * FROM Patients WHERE patient_id = :patient_id", {'patient_id': itemId})
+        record = cursor.fetchone()
+        if record:
+            print(record)
+        else:
+            print("No record found with the provided PatientID")
     elif choice == '3':
         itemId = input("Please input the Department ID for the Department you are looking for")
+        cursor.execute("SELECT * FROM Departments WHERE department_code = :department_code", {'department_code': itemId})
+        record = cursor.fetchone()
+        if record:
+            print(record)
+        else:
+            print("No record found with the provided Department")
     elif choice == '4': 
-        itemID = input("Please input the Operation ID for the Operation you are looking for")
+        itemId = input("Please input the Operation ID for the Operation you are looking for")
+        cursor.execute("SELECT * FROM Procedure WHERE procedure_number = :procedure_number", {'procedure_number': itemId})
+        record = cursor.fetchone()
+        if record:
+            print(record)
+        else: 
+            print("No record found with the provided Procedure")
     elif choice == '5':
-        itemID = input("Please input the name of the medication you are looking for")
+        itemId = input("Please input the name of the medication you are looking for\n")
+        cursor.execute("SELECT * FROM Medication WHERE med_name = :med_name", {'med_name': itemId})
+        record = cursor.fetchone()
+        if record:
+            print(record)
+        else:
+            print("No record found with the provided Medication Name")
 
 def promptUser():
     operation = input("Would you like to\n 1). Insert\n 2). Delete \n 3) Display Record\n") 
