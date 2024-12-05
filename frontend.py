@@ -304,14 +304,25 @@ def displayRecord(choice):
         else:
             print("No record found with the provided Department")
     elif choice == '4': 
-        itemId = input("Please input the Operation ID for the Operation you are looking for\n")
-        cursor.execute("SELECT * FROM Procedure WHERE procedure_number = :procedure_number", {'procedure_number': itemId})
-        records = cursor.fetchall()
-        if records:
-            for record in records:
-                print(f"Procedure Name: {record[0]}, Description: {record[1]}, Procedure Number: {record[2]}, Duration: {record[3]}, Offering Department: {record[4]}")
-        else: 
-            print("No record found with the provided Procedure")
+        selector = input("Would you like to find Operations by\n1) Procedure Number\n2) Offering Department\n")
+        if selector == '1':
+            itemId = input("Please input the Operation ID for the Operation you are looking for\n")
+            cursor.execute("SELECT * FROM Procedure WHERE procedure_number = :procedure_number", {'procedure_number': itemId})
+            records = cursor.fetchall()
+            if records:
+                for record in records:
+                    print(f"Procedure Name: {record[0]}, Description: {record[1]}, Procedure Number: {record[2]}, Duration: {record[3]}, Offering Department: {record[4]}")
+            else: 
+                print("No record found with the provided Procedure")
+        elif selector == '2':
+            itemId = input("Please input the department code for the department who's procedures you would like to view\n")
+            cursor.execute("SELECT * FROM Procedure WHERE offering_department = :offering_department", {'offering_department': itemId})
+            records = cursor.fetchall()
+            if records:
+                for record in records:
+                    print(f"Procedure Name: {record[0]}, Description: {record[1]}, Procedure Number: {record[2]}, Duration: {record[3]}, Offering Department: {record[4]}")
+            else: 
+                print("No record found with the provided Procedure")
     elif choice == '5':
         itemId = input("Please input the name of the medication you are looking for\n")
         cursor.execute("SELECT * FROM Medication WHERE med_name = :med_name", {'med_name': itemId})
@@ -344,12 +355,66 @@ def displayRecord(choice):
                 print(f"Patient ID: {record[0]}, Interaction ID: {record[1]}, Interaction Date: {record[2]}, Interaction Time: {record[3]}, Interaction Description: {record[4]}")
         else:
             print("No record found with the provided Interaction ID")
-            
+    elif choice == '8':
+        itemId = input("Please input the Patient ID of the Patient you are looking for\n")
+        print("\nPatient Information\n")
+        
+        cursor.execute("SELECT * FROM Patients WHERE patient_id = :patient_id", {'patient_id': itemId})
+        records = cursor.fetchall()
+        if records:
+            for record in records:
+                print(f"Patient ID: {record[0]}, First Name: {record[1]}, Last Name: {record[3]}, SSN: {record[4]}, Current Address: {record[5]}, Permanent Address: {record[6]}, \nPhone No: {record[7]}, Permanent Phone: {record[8]}, Birth Date: {record[9]}, Sex: {record[10]}, Condition: {record[11]}, Primary Care Doctor ID: {record[12]}")
+        else:
+            print("No record found with the provided PatientID")
+            sys.exit()
+        
+        print("\nAll Operations Performed on Patient\n")
+
+        cursor.execute("SELECT * FROM Patient_Procedure_Doctors WHERE patient_id = :patient_id", {'patient_id': itemId})
+        
+        records = cursor.fetchall()
+        if records:
+            for record in records:
+                print(f"Patient ID: {record[0]}, Procedure ID: {record[1]}, Procedure Doctor: {record[2]}, Notes: {record[3]}, Procedure Date: {record[4]}, Procedure Time: {record[5]}")
+        else:
+            print("No record found with the provided PatientID or Doctor ID")
+            sys.exit()
+        
+        print("\nAll medication prescribed to patient\n")
+        cursor.execute("SELECT * FROM Patient_Medication WHERE patient_id = :patient_id", {'patient_id': itemId})   
+        records = cursor.fetchall()
+        if records:
+            for record in records:
+                print(f"Patient ID: {record[0]}, Medication Name: {record[1]}, Presribing Doctor: {record[2]},Prescribing Date: {record[3]}")
+        else:
+            print("No record found with the provided Interaction ID")
+            sys.exit()
+    
+        print("\nAll interactions involving the patient\n")    
+        cursor.execute("SELECT * FROM Interaction WHERE patient_id = :patient_id", {'patient_id': itemId})
+        records = cursor.fetchall()
+        if records:
+            for record in records:
+                print(f"Patient ID: {record[0]}, Interaction ID: {record[1]}, Interaction Date: {record[2]}, Interaction Time: {record[3]}, Interaction Description: {record[4]}")
+        else:
+            print("No record found with the provided Interaction ID")
+            sys.exit()
+        
+    elif choice == '9':
+        itemId = input("Please input the Patient ID of the Patient you are looking for\n")
+        cursor.execute("SELECT * FROM Patient_Medication WHERE patient_id = :patient_id", {'patient_id': itemId})   
+        records = cursor.fetchall()
+        if records:
+            for record in records:
+                print(f"Patient ID: {record[0]}, Medication Name: {record[1]}, Presribing Doctor: {record[2]},Prescribing Date: {record[3]}")
+        else:
+            print("No record found with the provided Interaction ID")
+    
 def promptUser():
     operation = input("Would you like to\n1). Insert\n2). Delete \n3) Display Record\n4). Quit Program\n")
     if operation == '4':
         sys.exit()
-    choice = input("\n1.) Doctor\n2.) Patient\n3.) Department\n4.) Procedure\n5.) Medication\n6.) Assign a patient a procedure\n7.) Interaction \n8.) Quit Program \nPlease select desired field:\n")
+    choice = input("\n1.) Doctor\n2.) Patient\n3.) Department\n4.) Procedure\n5.) Medication\n6.) Assign a patient a procedure\n7.) Interaction \n8). Print Health Record\n 9). Print Medication Prescribed\n10.) Quit Program \nPlease select desired field:\n")
     if choice == '1':
         if operation == '1':
             insertDoctor()
@@ -400,6 +465,10 @@ def promptUser():
         else:
             displayRecord(choice)
     elif choice == '8':
+        displayRecord(choice)
+    elif choice == '9':
+        displayRecord(choice)
+    elif choice == '10':
         sys.exit()
     else:
         print("\nInvalid input please try again\n")
