@@ -171,7 +171,7 @@ def insertMedication():
             'med_description': med_description
         })
         connection.commit()
-
+        print("Data Inserted Successfully\n")
     except cx_Oracle.DatabaseError as e:
         # Handle database errors
         error, = e.args
@@ -180,6 +180,40 @@ def insertMedication():
     except Exception as e:
         # Handle any other errors
         print(f"An unexpected error occurred: {str(e)}") 
+
+def insertPatientProcedure():
+    patient_id = input("Please enter the patient ID\n")
+    procedure_id = input("Please enter the procedure ID\n")
+    procedure_doctor = input("Please enter the doctor ID of the doctor performing the procedure\n")
+    notes = input("Please enter any notes\n")
+    procedure_date = input("Please enter the date of the procedure\n")
+    procedure_time = input("Please enter the time of the procedure\n")
+
+    insert_query = """
+        INSERT INTO PATIENT_PROCEDURE_DOCTORS (patient_id, procedure_id, procedure_doctor, notes, procedure_date, procedure_time)
+        VALUES (:patient_id, :procedure_id, :procedure_doctor, :notes, :procedure_date, :procedure_time)
+    """
+
+    try:
+        cursor.execute(insert_query, {
+            'patient_id': patient_id,
+            'procedure_id': procedure_id,
+            'procedure_doctor': procedure_doctor,
+            'notes': notes,
+            'procedure_date': procedure_date,
+            'procedure_time': procedure_time
+        })
+        connection.commit()
+        print("Data Inserted Successfully\n")
+    except cx_Oracle.DatabaseError as e:
+        # Handle database errors
+        error, = e.args
+        print(f"Database error occurred: {error.code} - {error.message}")
+    
+    except Exception as e:
+        # Handle any other errors
+        print(f"An unexpected error occurred: {str(e)}") 
+
 
 def deleteDoctor():
     var = input("Input doctor ID: ")
@@ -200,6 +234,11 @@ def deleteProcedure():
 def deleteMedication():
     var = input("Input medicine name: ")
     cursor.execute("DELETE FROM Medicine WHERE medicine_name = :medicine_name", {'medicine_name': var})
+    print( "Operation executed.")
+
+def deletePatientProcedure():
+    var = input("Input patient ID: ")
+    cursor.execute("DELETE FROM Patient_Procedure_Doctors WHERE patient_id = :patient_id", {'patient_id': var})
     print( "Operation executed.")
 
 def displayRecord(choice):
@@ -238,15 +277,24 @@ def displayRecord(choice):
     elif choice == '5':
         itemId = input("Please input the name of the medication you are looking for\n")
         cursor.execute("SELECT * FROM Medication WHERE med_name = :med_name", {'med_name': itemId})
+        records = cursor.fetchall()
+        if records:
+            for record in records:
+                print(f"Medication Name: {record[0]}, Manufacturer: {record[1]}, Description: {record[2]}")
+        else:
+            print("No record found with the provided Medication Name")
+    elif choice == '6':
+        itemId = input("Please input the Patient ID of the Patient you are looking for")
+        cursor.execute("SELECT * FROM Patient_Procedure_Doctors WHERE patient_id = :patient_id", {'patient_id': itemId})
         record = cursor.fetchone()
         if record:
             print(record)
         else:
-            print("No record found with the provided Medication Name")
-
+            print("No record found with the provided PatientID")
+            
 def promptUser():
     operation = input("Would you like to\n 1). Insert\n 2). Delete \n 3) Display Record\n") 
-    choice = input("\n1.) Doctor\n 2.) Patient\n 3.) Department\n 4.) Procedure\n 5.) Medication\n 6.) Quit Program \nPlease select desired field:\n")
+    choice = input("\n1.) Doctor\n 2.) Patient\n 3.) Department\n 4.) Procedure\n 5.) Medication\n 6.) Assign a patient a procedure 7.) Quit Program \nPlease select desired field:\n")
     if choice == '1':
         if operation == '1':
             insertDoctor()
@@ -283,6 +331,13 @@ def promptUser():
         else:
             displayRecord(choice)
     elif choice == '6':
+        if operation == '1':
+            insertPatientProcedure()
+        elif operation == '2':
+            deletePatientProcedure()
+        else:
+            displayRecord(choice)
+    elif choice == '7':
         sys.exit()
     else:
         print("\nInvalid input please try again\n")
