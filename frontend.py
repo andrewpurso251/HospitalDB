@@ -213,7 +213,36 @@ def insertPatientProcedure():
     except Exception as e:
         # Handle any other errors
         print(f"An unexpected error occurred: {str(e)}") 
+def insertInteraction():
+    patient_id = input("Please enter the patient ID\n")
+    interaction_id = input("Please enter the interaction ID\n")
+    interaction_date = input("Please enter the interaction date\n")
+    interaction_time = input("Please enter the interaction time\n")
+    interaction_description = input("Please enter the interaction description\n")
 
+    insert_query = """
+        INSERT INTO INTERACTION (patient_id, interaction_id, interaction_date, interaction_time, interaction_description)
+        VALUES (:patient_id, :interaction_id, :interaction_date, :interaction_time, :interaction_description)
+    """
+
+    try:
+        cursor.execute(insert_query, {
+            'patient_id': patient_id,
+            'interaction_id': interaction_id,
+            'interaction_date': interaction_date,
+            'interaction_time': interaction_time,
+            'interaction_description': interaction_description
+        })
+        connection.commit()
+        print("Data Inserted Successfully\n")
+    except cx_Oracle.DatabaseError as e:
+        # Handle database errors
+        error, = e.args
+        print(f"Database error occurred: {error.code} - {error.message}")
+
+    except Exception as e:
+        # Handle any other errors
+        print(f"An unexpected error occurred: {str(e)}") 
 
 def deleteDoctor():
     var = input("Input doctor ID: ")
@@ -239,6 +268,11 @@ def deleteMedication():
 def deletePatientProcedure():
     var = input("Input patient ID: ")
     cursor.execute("DELETE FROM Patient_Procedure_Doctors WHERE patient_id = :patient_id", {'patient_id': var})
+    print( "Operation executed.")
+
+def deleteInteraction():
+    var = input("Input interaction ID: ")
+    cursor.execute("DELETE FROM Interaction WHERE interaction_id = :interaction_id", {'interaction_id': var})
     print( "Operation executed.")
 
 def displayRecord(choice):
@@ -301,10 +335,21 @@ def displayRecord(choice):
                 print(f"Patient ID: {record[0]}, Procedure ID: {record[1]}, Procedure Doctor: {record[2]}, Notes: {record[3]}, Procedure Date: {record[4]}, Procedure Time: {record[5]}")
         else:
             print("No record found with the provided PatientID or Doctor ID")
+    elif choice == '7':
+        itemId = input("Please input the Interaction ID of the Interaction you are looking for\n")
+        cursor.execute("SELECT * FROM Interaction WHERE interaction_id = :interaction_id", {'interaction_id': itemId})
+        records = cursor.fetchall()
+        if records:
+            for record in records:
+                print(f"Patient ID: {record[0]}, Interaction ID: {record[1]}, Interaction Date: {record[2]}, Interaction Time: {record[3]}, Interaction Description: {record[4]}")
+        else:
+            print("No record found with the provided Interaction ID")
             
 def promptUser():
-    operation = input("Would you like to\n 1). Insert\n 2). Delete \n 3) Display Record\n") 
-    choice = input("\n1.) Doctor\n 2.) Patient\n 3.) Department\n 4.) Procedure\n 5.) Medication\n 6.) Assign a patient a procedure\n 7.) Quit Program \nPlease select desired field:\n")
+    operation = input("Would you like to\n1). Insert\n2). Delete \n3) Display Record\n4). Quit Program\n")
+    if operation == '4':
+        sys.exit()
+    choice = input("\n1.) Doctor\n2.) Patient\n3.) Department\n4.) Procedure\n5.) Medication\n6.) Assign a patient a procedure\n7.) Interaction \n8.) Quit Program \nPlease select desired field:\n")
     if choice == '1':
         if operation == '1':
             insertDoctor()
@@ -348,6 +393,13 @@ def promptUser():
         else:
             displayRecord(choice)
     elif choice == '7':
+        if operation == '1':
+            insertInteraction()
+        elif operation == '2':
+            deleteInteraction()
+        else:
+            displayRecord(choice)
+    elif choice == '8':
         sys.exit()
     else:
         print("\nInvalid input please try again\n")
@@ -359,11 +411,8 @@ def promptUser():
 dsn_tns = cx_Oracle.makedsn("cisvm-oracle.unfcsd.unf.edu",1521, "ORCL")
 connection = cx_Oracle.connect("G26", "ayjmnHx7", dsn_tns)
 cursor = connection.cursor()
-cursor.execute("SELECT * FROM doctors")
 
-cursor.execute("SELECT table_name FROM user_tables")
-for x in cursor:
-    print(x)
+
 
 promptUser()
  
