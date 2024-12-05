@@ -2,16 +2,16 @@
 import cx_Oracle
 import sys
 def insertDoctor():
-    first_name = input("Please input doctor's first name")
-    last_name = input("Please input doctor's last name")
-    doctor_id = input("Please input the doctor's id number")
-    ssn = input("Please input the doctor's SSN")
-    assigned_department = input("Please input the doctor's department")
-    address = input("Please input the doctor's address")
-    phone_no = input("Please input the doctor's phone number")
-    birth_date = input("Please input the doctor's DOB")
-    contact_no = input("Please input the doctor's contact number")
-   
+    first_name = input("Please input doctor's first name\n")
+    last_name = input("Please input doctor's last name\n")
+    doctor_id = input("Please input the doctor's id number\n")
+    ssn = input("Please input the doctor's SSN\n")
+    assigned_department = input("Please input the doctor's department\n")
+    address = input("Please input the doctor's address\n")
+    phone_no = input("Please input the doctor's phone number\n")
+    birth_date = input("Please input the doctor's DOB\n")
+    contact_no = input("Please input the doctor's contact number\n")
+    
     insert_query = """
     INSERT INTO Doctors 
     (First_name, last_name, doctor_id, ssn, assigned_department, address, phone_no, birth_date, contact_no)
@@ -31,31 +31,31 @@ def insertDoctor():
             'contact_no': contact_no
             })
         connection.commit()
-        print("Data Inserted Successfully")
+        print("Data Inserted Successfully\n")
 
     except cx_Oracle.DatabaseError as e:
         # Handle database errors
         error, = e.args
-        print(f"Database error occurred: {error.code} - {error.message}")
-    
+        print(f"Database error occurred: {error.code} - {error.message}\n")
+
     except Exception as e:
         # Handle any other errors
-        print(f"An unexpected error occurred: {str(e)}")
+        print(f"An unexpected error occurred: {str(e)}\n")
 
 def insertPatient():
-    first_name = input("Please input the patient's first name")
-    last_name = input("Please input the patient's last name")
-    patient_id = input("Please input the patient's ID number")
-    ssn = input("Please input the patient's SSN")
-    current_address = input("Please input the patient's Current Address")
-    permanent_address = input("Please input the patient's Permanent Address")
-    phone_no = input("Please input the patient's phone number")
-    permanent_phone = input("Please input the patient's permanent phone number")
-    birth_date = input("Please input the patient's DOB")
-    sex = input("Please input the patient's sex")
-    condition = input("Please input the patient's condition")
-    primary_care_doctor_id = input ("Please input the ID of the patient's primary care doctor")
-    
+    first_name = input("Please input the patient's first name\n")
+    last_name = input("Please input the patient's last name\n")
+    patient_id = input("Please input the patient's ID number\n")
+    ssn = input("Please input the patient's SSN\n")
+    current_address = input("Please input the patient's Current Address\n")
+    permanent_address = input("Please input the patient's Permanent Address\n")
+    phone_no = input("Please input the patient's phone number\n")
+    permanent_phone = input("Please input the patient's permanent phone number\n")
+    birth_date = input("Please input the patient's DOB\n")
+    sex = input("Please input the patient's sex\n")
+    condition = input("Please input the patient's condition\n")
+    primary_care_doctor_id = input ("Please input the ID of the patient's primary care doctor\n")
+
     insert_query = """
     INSERT INTO PATIENTS (first_name, last_name, patient_id, ssn, current_address, permanent_address, phone_no,
     permanent_phone, birth_date, sex, condition, primary_care_doctor_id)
@@ -78,23 +78,23 @@ def insertPatient():
             'primary_care_doctor_id': primary_care_doctor_id
             })
         connection.commit()
-        print("Data Inserted Successfully")
+        print("Data Inserted Successfully\n")
 
     except cx_Oracle.DatabaseError as e:
         # Handle database errors
         error, = e.args
-        print(f"Database error occurred: {error.code} - {error.message}")
-    
+        print(f"Database error occurred: {error.code} - {error.message}\n")
+
     except Exception as e:
         # Handle any other errors
-        print(f"An unexpected error occurred: {str(e)}") 
+        print(f"An unexpected error occurred: {str(e)}\n") 
 
 def insertDepartment():
-    department_name = input("Please enter the department name")
-    department_code = input("Please enter the department code")
-    office_number = input("Please enter the office number")
-    office_phone = input("Please enter the office phone number")
-    department_head = input("Please enter the Doctor ID of the department head")
+    department_name = input("Please enter the department name\n")
+    department_code = input("Please enter the department code\n")
+    office_number = input("Please enter the office number\n")
+    office_phone = input("Please enter the office phone number\n")
+    department_head = input("Please enter the Doctor ID of the department head\n")
 
     insert_query = """
         INSERT INTO DEPARTMENTS (department_name, department_code, office_number, office_phone, department_head)
@@ -110,23 +110,23 @@ def insertDepartment():
         'department_head': department_head
         })
         connection.commit()
-        print("Data Inserted Successfully")    
+        print("Data Inserted Successfully\n")    
 
     except cx_Oracle.DatabaseError as e:
         # Handle database errors
         error, = e.args
-        print(f"Database error occurred: {error.code} - {error.message}")
-    
+        print(f"Database error occurred: {error.code} - {error.message}\n")
+
     except Exception as e:
         # Handle any other errors
-        print(f"An unexpected error occurred: {str(e)}") 
-    
+        print(f"An unexpected error occurred: {str(e)}\n") 
+
 def insertProcedure():
-    procedure_name = input("Please enter the procedure name")
-    procedure_description = input("Please enter the procedure description")
-    procedure_number = input("Please enter the procedure ID")
-    procedure_duration = input("Please enter the procedure duration")
-    offering_department = input("Please enter the department ID of the department that provides this procedure")
+    procedure_name = input("Please enter the procedure name\n")
+    procedure_description = input("Please enter the procedure description\n")
+    procedure_number = input("Please enter the procedure ID\n")
+    procedure_duration = input("Please enter the procedure duration\n")
+    offering_department = input("Please enter the department ID of the department that provides this procedure\n")
 
     insert_query = """
         INSERT INTO PROCEDURE (procedure_name, procedure_description, procedure_number, procedure_duration, offering_department)
@@ -143,22 +143,22 @@ def insertProcedure():
 
         })
         connection.commit()
-        print("Data Inserted Successfully")
-    
+        print("Data Inserted Successfully\n")
+
     except cx_Oracle.DatabaseError as e:
         # Handle database errors
         error, = e.args
-        print(f"Database error occurred: {error.code} - {error.message}")
-    
+        print(f"Database error occurred: {error.code} - {error.message}\n")
+
     except Exception as e:
         # Handle any other errors
-        print(f"An unexpected error occurred: {str(e)}") 
+        print(f"An unexpected error occurred: {str(e)}\n") 
 
 def insertMedication():
-    med_name = input("Please enter the medication name")
-    med_manufacturer = input("Please enter the medication manufacturer")
-    med_description = input("Please enter the medication description")
-    
+    med_name = input("Please enter the medication name\n")
+    med_manufacturer = input("Please enter the medication manufacturer\n")
+    med_description = input("Please enter the medication description\n")
+        
     insert_query = """
         INSERT INTO MEDICATION (med_name, med_manufacturer, med_description)
         VALUES (:med_name, :med_manufacturer, :med_description)
@@ -171,7 +171,7 @@ def insertMedication():
             'med_description': med_description
         })
         connection.commit()
-   
+
     except cx_Oracle.DatabaseError as e:
         # Handle database errors
         error, = e.args
@@ -215,8 +215,8 @@ def displayRecord(choice):
         itemID = input("Please input the name of the medication you are looking for")
 
 def promptUser():
-    operation = input("Would you like to 1). Insert\n 2). Delete \n 3) Display Record") 
-    choice = input("1.) Doctor\n 2.) Patient\n 3.) Department\n 4.) Procedure\n 5.) Medication\n 6.) Quit Program \nPlease select desired field:")
+    operation = input("Would you like to\n 1). Insert\n 2). Delete \n 3) Display Record\n") 
+    choice = input("\n1.) Doctor\n 2.) Patient\n 3.) Department\n 4.) Procedure\n 5.) Medication\n 6.) Quit Program \nPlease select desired field:\n")
     if choice == '1':
         if operation == '1':
             insertDoctor()
@@ -255,7 +255,7 @@ def promptUser():
     elif choice == '6':
         sys.exit()
     else:
-        print("invalid input please try again")
+        print("\nInvalid input please try again\n")
         
     promptUser()
 
