@@ -1,4 +1,4 @@
-hi
+
 import cx_Oracle
 import sys
 def insertDoctor():
@@ -133,8 +133,8 @@ def insertProcedure():
         'procedure_duration': procedure_duration,
         'offering_department': offering_department
 
-    })
-
+        })
+    
     except cx_Oracle.DatabaseError as e:
         # Handle database errors
         error, = e.args
@@ -145,6 +145,31 @@ def insertProcedure():
         print(f"An unexpected error occurred: {str(e)}") 
 
 def insertMedication():
+    med_name = input("Please enter the medication name")
+    med_manufacturer = input("Please enter the medication manufacturer")
+    med_description = input("Please enter the medication description")
+    
+    insert_query = """
+        INSERT INTO MEDICATION (med_name, med_manufacturer, med_description)
+        VALUES (:med_name, :med_manufacturer, :med_description)
+    """
+
+    try:
+        cursor.execute(insert_query, {
+            'med_name': med_name,
+            'med_manufacturer': med_manufacturer,
+            'med_description': med_description
+        })
+        connection.commit()
+   
+    except cx_Oracle.DatabaseError as e:
+        # Handle database errors
+        error, = e.args
+        print(f"Database error occurred: {error.code} - {error.message}")
+    
+    except Exception as e:
+        # Handle any other errors
+        print(f"An unexpected error occurred: {str(e)}") 
 
 def deleteDoctor():
     var = input("Input doctor ID: ")
@@ -209,10 +234,10 @@ def promptUser():
             deleteProcedure()
         else:
             displayRecord(choice)
-    elif (choice == 5):
-        if operation == 1:
+    elif (choice is '5'):
+        if operation is '1':
             insertMedication()
-        elif operation == 2:
+        elif operation is '2':
             deleteMedication()
         else:
             displayRecord(choice)
