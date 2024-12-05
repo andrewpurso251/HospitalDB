@@ -183,23 +183,23 @@ def insertMedication():
 
 def deleteDoctor():
     var = input("Input doctor ID: ")
-    cursor.execute("DELETE FROM Doctors WHERE doctor_id = " + var)
+    cursor.execute("DELETE FROM Doctors WHERE doctor_id = :doctor_id", {'doctor_id': var})
     print("Operation executed.")
 def deletePatient():
     var = input("Input patient ID: ")
-    cursor.execute("DELETE FROM Patients WHERE patient_id = " + var)
+    cursor.execute("DELETE FROM Patients WHERE patient_id = :patient_id", {'patient_id': var})
     print( "Operation executed.")
 def deleteDepartment():
     var = input("Input department code: ")
-    cursor.execute("DELETE FROM Doctors WHERE department_code = " + var)
-    print( "Operation executed.")
+    cursor.execute("DELETE FROM Departments WHERE department_code = :department_code", {'department_code': var})
+    print("Operation executed.")
 def deleteProcedure():
     var = input("Input procedure number : ")
-    cursor.execute("DELETE FROM Procedures WHERE procedure_number = " + var)
+    cursor.execute("DELETE FROM Procedures WHERE procedure_number = :procedure_number", {'procedure_number': var})
     print( "Operation executed.")
 def deleteMedication():
     var = input("Input medicine name: ")
-    cursor.execute("DELETE FROM Medicine WHERE medicine_name = " + var)
+    cursor.execute("DELETE FROM Medicine WHERE medicine_name = :medicine_name", {'medicine_name': var})
     print( "Operation executed.")
 
 def displayRecord(choice):
@@ -256,8 +256,8 @@ def promptUser():
         sys.exit()
     else:
         print("invalid input please try again")
-        promptUser()
-    
+        
+    promptUser()
 
 
 
@@ -271,5 +271,5 @@ for x in cursor:
     print(x)
 
 promptUser()
-
+ 
 
