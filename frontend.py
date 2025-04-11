@@ -1,28 +1,28 @@
 
 import cx_Oracle
 import sys
-def insertDoctor():
-    first_name = input("Please input doctor's first name\n")
-    last_name = input("Please input doctor's last name\n")
-    doctor_id = input("Please input the doctor's id number\n")
-    ssn = input("Please input the doctor's SSN\n")
-    assigned_department = input("Please input the doctor's department\n")
-    address = input("Please input the doctor's address\n")
-    phone_no = input("Please input the doctor's phone number\n")
-    birth_date = input("Please input the doctor's DOB\n")
-    contact_no = input("Please input the doctor's contact number\n")
+def insertStudent():
+    first_name = input("Please input student's first name\n")
+    last_name = input("Please input student's last name\n")
+    student_id = input("Please input the student's id number\n")
+    ssn = input("Please input the student's SSN\n")
+    assigned_department = input("Please input the student's department\n")
+    address = input("Please input the student's address\n")
+    phone_no = input("Please input the student's phone number\n")
+    birth_date = input("Please input the student's DOB\n")
+    contact_no = input("Please input the student's contact number\n")
     
     insert_query = """
-    INSERT INTO Doctors 
-    (First_name, last_name, doctor_id, ssn, assigned_department, address, phone_no, birth_date, contact_no)
-    VALUES (:first_name, :last_name, :doctor_id, :ssn, :assigned_department, :address, :phone_no, :birth_date, :contact_no)
+    INSERT INTO Students 
+    (First_name, last_name, student_id, ssn, assigned_department, address, phone_no, birth_date, contact_no)
+    VALUES (:first_name, :last_name, :student_id, :ssn, :assigned_department, :address, :phone_no, :birth_date, :contact_no)
     """
     try:
         # Execute the query with the provided input values
         cursor.execute(insert_query, {
             'first_name': first_name,
             'last_name': last_name,
-            'doctor_id': doctor_id,
+            'student_id': student_id,
             'ssn': ssn,
             'assigned_department': assigned_department,
             'address': address,
@@ -42,31 +42,31 @@ def insertDoctor():
         # Handle any other errors
         print(f"An unexpected error occurred: {str(e)}\n")
 
-def insertPatient():
-    first_name = input("Please input the patient's first name\n")
-    last_name = input("Please input the patient's last name\n")
-    patient_id = input("Please input the patient's ID number\n")
-    ssn = input("Please input the patient's SSN\n")
-    current_address = input("Please input the patient's Current Address\n")
-    permanent_address = input("Please input the patient's Permanent Address\n")
-    phone_no = input("Please input the patient's phone number\n")
-    permanent_phone = input("Please input the patient's permanent phone number\n")
-    birth_date = input("Please input the patient's DOB\n")
-    sex = input("Please input the patient's sex\n")
-    condition = input("Please input the patient's condition\n")
-    primary_care_doctor_id = input ("Please input the ID of the patient's primary care doctor\n")
+def insertInstructor():
+    first_name = input("Please input the instructor's first name\n")
+    last_name = input("Please input the instructor's last name\n")
+    instructor_id = input("Please input the instructor's ID number\n")
+    ssn = input("Please input the instructor's SSN\n")
+    current_address = input("Please input the instructor's Current Address\n")
+    permanent_address = input("Please input the instructor's Permanent Address\n")
+    phone_no = input("Please input the instructor's phone number\n")
+    permanent_phone = input("Please input the instructor's permanent phone number\n")
+    birth_date = input("Please input the instructor's DOB\n")
+    sex = input("Please input the instructor's sex\n")
+    condition = input("Please input the instructor's condition\n")
+    primary_care_doctor_id = input ("Please input the ID of the instructor's primary care doctor\n")
 
     insert_query = """
-    INSERT INTO PATIENTS (first_name, last_name, patient_id, ssn, current_address, permanent_address, phone_no,
+    INSERT INTO InstructorsS (first_name, last_name, instructor_id, ssn, current_address, permanent_address, phone_no,
     permanent_phone, birth_date, sex, condition, primary_care_doctor_id)
-    VALUES(:first_name, :last_name, :patient_id, :ssn, :current_address, :permanent_address, :phone_no, :permanent_phone, :birth_date, :sex, :condition, :primary_care_doctor_id)
+    VALUES(:first_name, :last_name, :instructor_id, :ssn, :current_address, :permanent_address, :phone_no, :permanent_phone, :birth_date, :sex, :condition, :primary_care_doctor_id)
     """
 
     try:
         cursor.execute(insert_query, {
             'first_name': first_name,
             'last_name': last_name,
-            'patient_id': patient_id,
+            'instructor_id': instructor_id,
             'ssn':ssn,
             'current_address': current_address,
             'permanent_address': permanent_address,
@@ -244,13 +244,13 @@ def insertInteraction():
         # Handle any other errors
         print(f"An unexpected error occurred: {str(e)}") 
 
-def deleteDoctor():
-    var = input("Input doctor ID: ")
-    cursor.execute("DELETE FROM Doctors WHERE doctor_id = :doctor_id", {'doctor_id': var})
+def deleteStudent():
+    var = input("Input student ID: ")
+    cursor.execute("DELETE FROM Students WHERE student_id = :student_id", {'student_id': var})
     print("Operation executed.")
-def deletePatient():
-    var = input("Input patient ID: ")
-    cursor.execute("DELETE FROM Patients WHERE patient_id = :patient_id", {'patient_id': var})
+def deleteInstructor():
+    var = input("Input instructor ID: ")
+    cursor.execute("DELETE FROM Instructors WHERE instructor_id = :instructor_id", {'instructor_id': var})
     print( "Operation executed.")
 def deleteDepartment():
     var = input("Input department code: ")
@@ -277,23 +277,23 @@ def deleteInteraction():
 
 def displayRecord(choice):
     if choice == '1':
-        itemId = input("Please input the DoctorID of the Doctor you are looking for\n")
-        cursor.execute("SELECT * FROM Doctors WHERE doctor_id = :doctor_id", {'doctor_id': itemId})
+        itemId = input("Please input the StudentID of the Student you are looking for\n")
+        cursor.execute("SELECT * FROM Students WHERE student_id = :student_id", {'student_id': itemId})
         records = cursor.fetchall()
         if records:
             for record in records:
-                print(f"Doctor ID: {record[0]}, First Name: {record[1]}, Last Name: {record[2]}, SSN: {record[3]}, Department: {record[4]}, Address: {record[5]}, Phone No: {record[6]}, Birth Date: {record[7]}, Contact No: {record[8]}")
+                print(f"Student ID: {record[0]}, First Name: {record[1]}, Last Name: {record[2]}, SSN: {record[3]}, Department: {record[4]}, Address: {record[5]}, Phone No: {record[6]}, Birth Date: {record[7]}, Contact No: {record[8]}")
         else:
-            print("No record found with the provided DoctorID")
+            print("No record found with the provided student ID")
     elif choice == '2':
-        itemId = input("Please input the PatientID of the Patient you are looking for\n")
-        cursor.execute("SELECT * FROM Patients WHERE patient_id = :patient_id", {'patient_id': itemId})
+        itemId = input("Please input the InstructorID of the Instructor you are looking for\n")
+        cursor.execute("SELECT * FROM Instructors WHERE instructor_id = :instructor_id", {'instructor_id': itemId})
         records = cursor.fetchall()
         if records:
             for record in records:
-                print(f"Patient ID: {record[0]}, First Name: {record[1]}, Last Name: {record[2]}, SSN: {record[3]}, Current Address: {record[4]}, Permanent Address: {record[5]}, Phone No: {record[6]}, Permanent Phone: {record[7]}, Birth Date: {record[8]}, Sex: {record[9]}, Condition: {record[10]}, Primary Care Doctor ID: {record[11]}")
+                print(f"Instructor ID: {record[0]}, First Name: {record[1]}, Last Name: {record[2]}, SSN: {record[3]}, Current Address: {record[4]}, Permanent Address: {record[5]}, Phone No: {record[6]}, Permanent Phone: {record[7]}, Birth Date: {record[8]}, Sex: {record[9]}, Condition: {record[10]}, Primary Care Doctor ID: {record[11]}")
         else:
-            print("No record found with the provided PatientID")
+            print("No record found with the provided InstructorID")
     elif choice == '3':
         itemId = input("Please input the Department ID for the Department you are looking for\n")
         cursor.execute("SELECT * FROM Departments WHERE department_code = :department_code", {'department_code': itemId})
@@ -414,19 +414,19 @@ def promptUser():
     operation = input("Would you like to\n1). Insert\n2). Delete \n3) Display Record\n4). Quit Program\n")
     if operation == '4':
         sys.exit()
-    choice = input("\n1.) Doctor\n2.) Patient\n3.) Department\n4.) Procedure\n5.) Medication\n6.) Assign a patient a procedure\n7.) Interaction \n8). Print Health Record\n 9). Print Medication Prescribed\n10.) Quit Program \nPlease select desired field:\n")
+    choice = input("\n1.) Student\n2.) Department\n3.) Course\n4.) Instructor\n5.) Course Section\n6.) Assign a patient a procedure\n7.) Interaction \n8). Print Grade Report\n 9). Print Medication Prescribed\n10.) Quit Program \nPlease select desired field:\n")
     if choice == '1':
         if operation == '1':
-            insertDoctor()
+            insertStudent()
         elif operation == '2':
-            deleteDoctor()
+            deleteStudent()
         else:
             displayRecord(choice)
     elif choice == '2':
         if operation == '1':
-            insertPatient()
+            insertInstructor()
         elif operation == '2':
-            deletePatient()
+            deleteInstructor()
         else: 
             displayRecord(choice)
     elif choice == '3':
