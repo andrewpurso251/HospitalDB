@@ -5,9 +5,8 @@ CREATE TABLE STUDENT (
     mInit VARCHAR(1),
     lName VARCHAR(20) NOT NULL,
     currentAddress VARCHAR(50) NOT NULL,
-    city VARCHAR(20) NOT NULL,
-    state VARCHAR(2) NOT NULL,
-    zip VARCHAR(5) NOT NULL,
+    
+    # DELETE THESE VALUES (city state and zip)
     phone VARCHAR(12) NOT NULL,
     birthDate VARCHAR(10) NOT NULL,
     sex VARCHAR(1) NOT NULL,
@@ -51,7 +50,7 @@ CREATE TABLE Instructor (
     ssn VARCHAR(11) UNIQUE NOT NULL,
     nNumber VARCHAR(9) PRIMARY KEY NOT NULL,
     fName VARCHAR(20) NOT NULL,
-    mInit VARCHAR(1),
+    #mInit VARCHAR(1),
     lName VARCHAR(20) NOT NULL,
     currentAddress VARCHAR(50) NOT NULL,
     phoneNumber VARCHAR(12) NOT NULL,

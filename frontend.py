@@ -6,29 +6,34 @@ def insertStudent():
     last_name = input("Please input student's last name\n")
     student_id = input("Please input the student's id number\n")
     ssn = input("Please input the student's SSN\n")
-    assigned_department = input("Please input the student's department\n")
+    major_department = input("Please input the student's major department\n")
+    minor_department = input("Please input the student's minor department\n")
     address = input("Please input the student's address\n")
     phone_no = input("Please input the student's phone number\n")
     birth_date = input("Please input the student's DOB\n")
-    contact_no = input("Please input the student's contact number\n")
+    student_class = input("Please input the student's class\n")
+    degreeProgram = input("Please input the student's degree program\n")
     
     insert_query = """
-    INSERT INTO Students 
-    (First_name, last_name, student_id, ssn, assigned_department, address, phone_no, birth_date, contact_no)
-    VALUES (:first_name, :last_name, :student_id, :ssn, :assigned_department, :address, :phone_no, :birth_date, :contact_no)
+    INSERT INTO Student 
+    (First_name, last_name, student_id, ssn, major_department, minor_department, address, phone_no, birth_date, student_class, degreeProgram)
+    VALUES (:fName, :lName, :nNumber, :ssn, :majorDepartment, :minor_department, :currentAddress, :phone, :birthDate, :class, :degreeProgram) )
     """
     try:
         # Execute the query with the provided input values
         cursor.execute(insert_query, {
-            'first_name': first_name,
-            'last_name': last_name,
-            'student_id': student_id,
+            'fname': first_name,
+            'lname': last_name,
+            'nNumber': student_id,
             'ssn': ssn,
-            'assigned_department': assigned_department,
-            'address': address,
-            'phone_no': phone_no,
-            'birth_date': birth_date,
-            'contact_no': contact_no
+            'majorDepartment': major_department,
+            'minor_department': minor_department,
+            'currentAddress': address,
+            'phone': phone_no,
+            'birthDate': birth_date,
+            'class': student_class,
+            'degreeProgram': degreeProgram
+            
             })
         connection.commit()
         print("Data Inserted Successfully\n")
@@ -48,31 +53,27 @@ def insertInstructor():
     instructor_id = input("Please input the instructor's ID number\n")
     ssn = input("Please input the instructor's SSN\n")
     current_address = input("Please input the instructor's Current Address\n")
-    permanent_address = input("Please input the instructor's Permanent Address\n")
     phone_no = input("Please input the instructor's phone number\n")
-    permanent_phone = input("Please input the instructor's permanent phone number\n")
-    birth_date = input("Please input the instructor's DOB\n")
-    sex = input("Please input the instructor's sex\n")
+    
+    sex = input("Please input the instructor's age\n")
     condition = input("Please input the instructor's condition\n")
     primary_care_doctor_id = input ("Please input the ID of the instructor's primary care doctor\n")
 
     insert_query = """
-    INSERT INTO InstructorsS (first_name, last_name, instructor_id, ssn, current_address, permanent_address, phone_no,
-    permanent_phone, birth_date, sex, condition, primary_care_doctor_id)
-    VALUES(:first_name, :last_name, :instructor_id, :ssn, :current_address, :permanent_address, :phone_no, :permanent_phone, :birth_date, :sex, :condition, :primary_care_doctor_id)
+    INSERT INTO InstructorsS (first_name, last_name, instructor_id, ssn, current_address, phone_no, birth_date, sex, condition, primary_care_doctor_id)
+    VALUES(:first_name, :last_name, :instructor_id, :ssn, :current_address, :phone_no, :age, :condition, :primary_care_doctor_id)
     """
 
     try:
         cursor.execute(insert_query, {
-            'first_name': first_name,
-            'last_name': last_name,
-            'instructor_id': instructor_id,
+            'fName': first_name,
+            'lName': last_name,
+            'nNumber': instructor_id,
             'ssn':ssn,
-            'current_address': current_address,
-            'permanent_address': permanent_address,
-            'phone_no': phone_no,
-            'permanent_phone': permanent_phone,
-            'birth_date': birth_date,
+            'currentAddress': current_address,
+            'phoneNumber': phone_no,
+            
+           
             'sex': sex,
             'condition': condition,
             'primary_care_doctor_id': primary_care_doctor_id
@@ -94,20 +95,20 @@ def insertDepartment():
     department_code = input("Please enter the department code\n")
     office_number = input("Please enter the office number\n")
     office_phone = input("Please enter the office phone number\n")
-    department_head = input("Please enter the Doctor ID of the department head\n")
+    college = input("Please enter the college the department belongs to\n")
 
     insert_query = """
-        INSERT INTO DEPARTMENTS (department_name, department_code, office_number, office_phone, department_head)
-        VALUES(:department_name, :department_code, :office_number, :office_phone, :department_head)
+        INSERT INTO DEPARTMENTS (department_name, department_code, office_number, office_phone, college)
+        VALUES(:dName, :dCode, :officeNumber, :officePhone, :college)
     """
 
     try: 
         cursor.execute(insert_query, {
-        'department_name': department_name,
-        'department_code': department_code,
-        'office_number': office_number,
-        'office_phone': office_phone,
-        'department_head': department_head
+        'dName': department_name,
+        'dCode': department_code,
+        'officeNumber': office_number,
+        'officePhone': office_phone,
+        'college': college
         })
         connection.commit()
         print("Data Inserted Successfully\n")    
@@ -121,26 +122,27 @@ def insertDepartment():
         # Handle any other errors
         print(f"An unexpected error occurred: {str(e)}\n") 
 
-def insertProcedure():
-    procedure_name = input("Please enter the procedure name\n")
-    procedure_description = input("Please enter the procedure description\n")
-    procedure_number = input("Please enter the procedure ID\n")
-    procedure_duration = input("Please enter the procedure duration\n")
-    offering_department = input("Please enter the department ID of the department that provides this procedure\n")
+def insertCourse():
+    cName = input("Please enter the course name\n")
+    cNumber = input("Please enter the course number\n")
+    description = input("Please enter the course description\n")
+    semesterHours = input("Please enter the semester hours\n")
+    levels = input("Please enter the course level\n")
+    offeringDepartment = input("Please enter the department ID of the department that offers this course\n")
 
     insert_query = """
-        INSERT INTO PROCEDURE (procedure_name, procedure_description, procedure_number, procedure_duration, offering_department)
-        VALUES (:procedure_name, :procedure_description, :procedure_number, :procedure_duration, :offering_department)
+        INSERT INTO Course (cName, cNumber, description, semesterHours, levels, offeringDepartment)
+        VALUES (:cName, :cNumber, :description, :semesterHours, :levels, :offeringDepartment)
     """
 
     try: 
         cursor.execute(insert_query, {
-        'procedure_name': procedure_name,
-        'procedure_description': procedure_description,
-        'procedure_number': procedure_number,
-        'procedure_duration': procedure_duration,
-        'offering_department': offering_department
-
+            'cName': cName,
+            'cNumber': cNumber,
+            'description': description,
+            'semesterHours': semesterHours,
+            'levels': levels,
+            'offeringDepartment': offeringDepartment
         })
         connection.commit()
         print("Data Inserted Successfully\n")
@@ -152,23 +154,21 @@ def insertProcedure():
 
     except Exception as e:
         # Handle any other errors
-        print(f"An unexpected error occurred: {str(e)}\n") 
+        print(f"An unexpected error occurred: {str(e)}\n")
 
-def insertMedication():
-    med_name = input("Please enter the medication name\n")
-    med_manufacturer = input("Please enter the medication manufacturer\n")
-    med_description = input("Please enter the medication description\n")
+def insertCoursePrerequisite():
+    courseNumber = input("Please enter the course number\n")
+    prerequisiteNumber = input("Please enter the prerequisite course number\n")
         
     insert_query = """
-        INSERT INTO MEDICATION (med_name, med_manufacturer, med_description)
-        VALUES (:med_name, :med_manufacturer, :med_description)
+        INSERT INTO CoursePrerequisite (courseNumber, prerequisiteNumber)
+        VALUES (:courseNumber, :prerequisiteNumber)
     """
 
     try:
         cursor.execute(insert_query, {
-            'med_name': med_name,
-            'med_manufacturer': med_manufacturer,
-            'med_description': med_description
+            'courseNumber': courseNumber,
+            'prerequisiteNumber': prerequisiteNumber
         })
         connection.commit()
         print("Data Inserted Successfully\n")
@@ -181,27 +181,21 @@ def insertMedication():
         # Handle any other errors
         print(f"An unexpected error occurred: {str(e)}") 
 
-def insertPatientProcedure():
-    patient_id = input("Please enter the patient ID\n")
-    procedure_id = input("Please enter the procedure ID\n")
-    procedure_doctor = input("Please enter the doctor ID of the doctor performing the procedure\n")
-    notes = input("Please enter any notes\n")
-    procedure_date = input("Please enter the date of the procedure\n")
-    procedure_time = input("Please enter the time of the procedure\n")
+def insertStudentGrade():
+    nNumber = input("Please enter the student's N-Number\n")
+    courseNumber = input("Please enter the course number\n")
+    grade = input("Please enter the grade\n")
 
     insert_query = """
-        INSERT INTO PATIENT_PROCEDURE_DOCTORS (patient_id, procedure_id, procedure_doctor, notes, procedure_date, procedure_time)
-        VALUES (:patient_id, :procedure_id, :procedure_doctor, :notes, :procedure_date, :procedure_time)
+        INSERT INTO StudentGrade (nNumber, courseNumber, grade)
+        VALUES (:nNumber, :courseNumber, :grade)
     """
 
     try:
         cursor.execute(insert_query, {
-            'patient_id': patient_id,
-            'procedure_id': procedure_id,
-            'procedure_doctor': procedure_doctor,
-            'notes': notes,
-            'procedure_date': procedure_date,
-            'procedure_time': procedure_time
+            'nNumber': nNumber,
+            'courseNumber': courseNumber,
+            'grade': grade
         })
         connection.commit()
         print("Data Inserted Successfully\n")
@@ -212,68 +206,35 @@ def insertPatientProcedure():
     
     except Exception as e:
         # Handle any other errors
-        print(f"An unexpected error occurred: {str(e)}") 
-def insertInteraction():
-    patient_id = input("Please enter the patient ID\n")
-    interaction_id = input("Please enter the interaction ID\n")
-    interaction_date = input("Please enter the interaction date\n")
-    interaction_time = input("Please enter the interaction time\n")
-    interaction_description = input("Please enter the interaction description\n")
+        print(f"An unexpected error occurred: {str(e)}")
 
-    insert_query = """
-        INSERT INTO INTERACTION (patient_id, interaction_id, interaction_date, interaction_time, interaction_description)
-        VALUES (:patient_id, :interaction_id, :interaction_date, :interaction_time, :interaction_description)
-    """
-
-    try:
-        cursor.execute(insert_query, {
-            'patient_id': patient_id,
-            'interaction_id': interaction_id,
-            'interaction_date': interaction_date,
-            'interaction_time': interaction_time,
-            'interaction_description': interaction_description
-        })
-        connection.commit()
-        print("Data Inserted Successfully\n")
-    except cx_Oracle.DatabaseError as e:
-        # Handle database errors
-        error, = e.args
-        print(f"Database error occurred: {error.code} - {error.message}")
-
-    except Exception as e:
-        # Handle any other errors
-        print(f"An unexpected error occurred: {str(e)}") 
 
 def deleteStudent():
     var = input("Input student ID: ")
-    cursor.execute("DELETE FROM Students WHERE student_id = :student_id", {'student_id': var})
+    cursor.execute("DELETE FROM Student WHERE nNumber = :nNumber", {'nNumber': var})
     print("Operation executed.")
 def deleteInstructor():
     var = input("Input instructor ID: ")
-    cursor.execute("DELETE FROM Instructors WHERE instructor_id = :instructor_id", {'instructor_id': var})
+    cursor.execute("DELETE FROM Instructor WHERE nNumber = :nNumber", {'nNumber': var})
     print( "Operation executed.")
 def deleteDepartment():
     var = input("Input department code: ")
-    cursor.execute("DELETE FROM Departments WHERE department_code = :department_code", {'department_code': var})
+    cursor.execute("DELETE FROM Department WHERE dCode = :dCode", {'dCode': var})
     print("Operation executed.")
-def deleteProcedure():
-    var = input("Input procedure number : ")
-    cursor.execute("DELETE FROM Procedures WHERE procedure_number = :procedure_number", {'procedure_number': var})
+def deleteCourse():
+    var = input("Input course number : ")
+    cursor.execute("DELETE FROM Course WHERE courseNumber = :courseNumber", {'courseNumber': var})
     print( "Operation executed.")
-def deleteMedication():
-    var = input("Input medicine name: ")
-    cursor.execute("DELETE FROM Medicine WHERE medicine_name = :medicine_name", {'medicine_name': var})
-    print( "Operation executed.")
-
-def deletePatientProcedure():
-    var = input("Input patient ID: ")
-    cursor.execute("DELETE FROM Patient_Procedure_Doctors WHERE patient_id = :patient_id", {'patient_id': var})
+def deleteCoursePrerequisite():
+    var = input("Input course number: ")
+    cursor.execute("DELETE FROM CoursePrerequisite WHERE courseNumber = :courseNumber", {'courseNumber': var})
     print( "Operation executed.")
 
-def deleteInteraction():
-    var = input("Input interaction ID: ")
-    cursor.execute("DELETE FROM Interaction WHERE interaction_id = :interaction_id", {'interaction_id': var})
+def deleteStudentGrade():
+    var = input("Input Student ID: ")
+    cursor.execute("DELETE FROM StudentGrade WHERE nNumber = :nNumber", {'nNumber': var})
     print( "Operation executed.")
+
 
 def displayRecord(choice):
     if choice == '1':
